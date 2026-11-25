@@ -54,6 +54,7 @@ export default defineConfig(({ mode }) => {
   const apiKey = env.APIBIBLIA_API_KEY?.trim() ?? ''
 
   return {
+    base: process.env.GITHUB_ACTIONS === 'true' ? '/ensenanzas/' : '/',
     plugins: [
       react(),
       tailwindcss(),

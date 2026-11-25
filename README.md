@@ -15,6 +15,17 @@ Reinicia `npm run dev` después de cambiar la clave. El archivo `.env` es local,
 está excluido de Git y la clave solo se usa desde el proxy de desarrollo; no se
 envía al navegador. No uses un prefijo `VITE_` para esta variable.
 
+## Publicación en GitHub Pages
+
+El workflow `.github/workflows/deploy-pages.yml` construye la aplicación y
+publica `dist` cuando hay un push a `master`. En la configuración del
+repositorio, selecciona **Settings → Pages → Build and deployment → Source:
+GitHub Actions**. La aplicación se publica bajo `/ensenanzas/`.
+
+GitHub Pages solo aloja archivos estáticos: las consultas bíblicas necesitan un
+proxy de servidor que no forma parte de Pages. La clave del `.env` local no se
+incluye en el despliegue.
+
 ## Exportación
 
 La aplicación genera archivos `.pptx` y `.docx` localmente. El PowerPoint usa
