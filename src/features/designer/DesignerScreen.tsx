@@ -1,5 +1,5 @@
 import type { Teaching } from '@/features/library/types'
-import { themes } from './themes'
+import { getThemeBackgroundStyle, themes } from './themes'
 
 interface DesignerScreenProps {
   teachings: Teaching[]
@@ -54,7 +54,7 @@ export function DesignerScreen({
           Crea una enseñanza antes de configurar un tema.
         </div>
       ) : (
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {themes.map((theme) => (
             <button
               key={theme.id}
@@ -66,7 +66,11 @@ export function DesignerScreen({
             >
               <div
                 className="aspect-video rounded-xl p-5"
-                style={{ background: theme.background, color: theme.titleColor, fontFamily: theme.fontFamily }}
+                style={{
+                  ...getThemeBackgroundStyle(theme),
+                  color: theme.titleColor,
+                  fontFamily: theme.fontFamily,
+                }}
               >
                 <div className="h-1.5 w-10 rounded" style={{ background: theme.accentColor }} />
                 <p className="mt-5 text-lg font-bold">La fe que transforma</p>

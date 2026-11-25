@@ -53,6 +53,63 @@ function colorValue(value: string, fallback: string): string {
   return /^#[\da-f]{6}$/i.test(value) ? value.slice(1).toUpperCase() : fallback.slice(1).toUpperCase()
 }
 
+function addThemeDecoration(
+  slide: PptxGenJS.Slide,
+  pptx: PptxGenJS,
+  theme: ReturnType<typeof getTheme>,
+) {
+  const accent = colorValue(theme.accentColor, '#1D4ED8')
+  const rect = pptx.ShapeType.rect
+
+  if (theme.decoration === 'side-stripe') {
+    slide.addShape(rect, {
+      x: 0,
+      y: 0,
+      w: 0.16,
+      h: 7.5,
+      line: { color: accent, transparency: 100 },
+      fill: { color: accent },
+    })
+  } else if (theme.decoration === 'corner-orbs') {
+    for (const orb of [
+      { x: 11.55, y: 0.05, w: 1.65, h: 1.65, transparency: 82 },
+      { x: 0.05, y: 5.8, w: 1.7, h: 1.7, transparency: 88 },
+    ]) {
+      slide.addShape(pptx.ShapeType.ellipse, {
+        ...orb,
+        line: { color: accent, transparency: 100 },
+        fill: { color: accent, transparency: orb.transparency },
+      })
+    }
+  } else if (theme.decoration === 'corner-bars') {
+    for (const bar of [
+      { x: 8.2, y: 7.18, w: 5.13, h: 0.18, transparency: 78 },
+      { x: 9.5, y: 6.9, w: 3.83, h: 0.18, transparency: 84 },
+      { x: 10.8, y: 6.62, w: 2.53, h: 0.18, transparency: 90 },
+    ]) {
+      slide.addShape(rect, {
+        ...bar,
+        line: { color: accent, transparency: 100 },
+        fill: { color: accent, transparency: bar.transparency },
+      })
+    }
+  } else if (theme.decoration === 'frame') {
+    const frame = [
+      { x: 0.35, y: 0.3, w: 12.63, h: 0.025 },
+      { x: 0.35, y: 7.175, w: 12.63, h: 0.025 },
+      { x: 0.35, y: 0.3, w: 0.025, h: 6.9 },
+      { x: 12.955, y: 0.3, w: 0.025, h: 6.9 },
+    ]
+    for (const edge of frame) {
+      slide.addShape(rect, {
+        ...edge,
+        line: { color: accent, transparency: 100 },
+        fill: { color: accent, transparency: 25 },
+      })
+    }
+  }
+}
+
 function runOptions(style: TextStyle): PptxGenJS.TextPropsOptions {
   return {
     ...(style.bold ? { bold: true } : {}),
@@ -536,6 +593,7 @@ export async function exportTeachingAsPptx(teaching: Teaching): Promise<void> {
     const fontFace = theme.fontFamily.split(',')[0]
 
     slide.background = { color: background }
+    addThemeDecoration(slide, pptx, theme)
     if (showTitle) {
       slide.addText(title || teaching.title, {
         x: 0.95,

@@ -4,7 +4,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { useEffect, useMemo, useState } from 'react'
 import type { Teaching } from '@/features/library/types'
 import type { SlideCustomization } from '@/features/library/types'
-import { getTheme } from '@/features/designer/themes'
+import { getTheme, getThemeBackgroundStyle } from '@/features/designer/themes'
 import { BiblePanel } from '@/features/bible/BiblePanel'
 import type { BibleReference } from '@/features/library/types'
 import { buildExportSlides, type ExportSlide } from '@/features/export/pptxGenerator'
@@ -326,9 +326,10 @@ function SlidePreview({
     return (
       <div
         key={index}
-        className={`preview-block ${block.quoted ? 'border-l-2 border-blue-400 pl-[2%] italic' : ''}`}
+        className={`preview-block ${block.quoted ? 'border-l-2 pl-[2%] italic' : ''}`}
         style={{
           fontSize: `${(block.fontSize ?? 21 * (block.quoted ? 0.94 : 1) * customization.fontScale) * 0.10417}cqw`,
+          ...(block.quoted ? { borderColor: theme.accentColor } : {}),
         }}
       >
         {block.prefix && <span>{block.prefix}</span>}
@@ -341,7 +342,7 @@ function SlidePreview({
     <div
       className="flex h-full flex-col overflow-hidden p-[7%]"
       style={{
-        background: customization.background,
+        ...getThemeBackgroundStyle(theme, customization.background),
         color: theme.textColor,
         fontFamily: theme.fontFamily,
         textAlign: customization.alignment,
