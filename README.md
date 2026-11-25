@@ -15,16 +15,13 @@ Reinicia `npm run dev` después de cambiar la clave. El archivo `.env` es local,
 está excluido de Git y la clave solo se usa desde el proxy de desarrollo; no se
 envía al navegador. No uses un prefijo `VITE_` para esta variable.
 
-## Publicación en GitHub Pages
+## Publicación en Netlify
 
-El workflow `.github/workflows/deploy-pages.yml` construye la aplicación y
-publica `dist` cuando hay un push a `master`. En la configuración del
-repositorio, selecciona **Settings → Pages → Build and deployment → Source:
-GitHub Actions**. La aplicación se publica bajo `/ensenanzas/`.
-
-GitHub Pages solo aloja archivos estáticos: las consultas bíblicas necesitan un
-proxy de servidor que no forma parte de Pages. La clave del `.env` local no se
-incluye en el despliegue.
+Conecta el repositorio con Netlify. El archivo `netlify.toml` define el build,
+la carpeta `dist` y la función serverless para consultar ApiBiblia. En la
+configuración del sitio, agrega la variable de entorno `APIBIBLIA_API_KEY` con
+tu clave y vuelve a desplegar. La clave se usa únicamente en la función del
+servidor y no se incluye en el frontend.
 
 ## Exportación
 

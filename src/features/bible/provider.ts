@@ -39,7 +39,7 @@ export async function lookupBibleReference(
   const response = await fetch(sourceUrl)
   if (!response.ok) {
     if (response.status === 503) {
-      throw new Error('Configura APIBIBLIA_API_KEY en el archivo .env y reinicia el servidor.')
+      throw new Error('Configura APIBIBLIA_API_KEY en el .env local o en las variables de entorno de Netlify.')
     }
     if (response.status === 401) {
       throw new Error('ApiBiblia rechazó la clave. Verifica APIBIBLIA_API_KEY en el archivo .env.')
